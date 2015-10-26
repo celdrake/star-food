@@ -11,7 +11,7 @@ body {
     background-color: #666666;
 }
 
-div {
+div, span {
     color: #FFFFFF;
     box-sizing: border-box;
 }
@@ -40,7 +40,7 @@ h3 {
     margin: 0 10px;
     font-size: 24px;
     font-weight: bold;
-    color: #FF9933;
+    color: #330033;
     float: left;
 }
 
@@ -90,4 +90,54 @@ h3 {
     margin-right: 40px;
     text-decoration: none;
     color: rgba(0,0,0, 0.8);
+}
+
+.recipe-detail-container {
+    height: 260px;
+    background-color: lightslategray;
+    box-shadow: inset 0 1px 11px 9px #A0BAC1;
+    border-radius: 12px;
+}
+
+.recipe-image {
+    width: 120px;
+    height: 120px;
+    float: left;
+    margin: 40px;
+}
+
+.recipe-details {
+    float: left;
+    margin: 40px 0;
+}
+
+.recipe-details__title {
+    font-size: 30px;
+}
+
+.recipe-details__ingredients,
+.recipe-details__cooking {
+    margin: 20px 0 40px 60px;
+    padding: 10px;
+    position: relative;
+}
+
+.tag {
+    width: 130px;
+    text-align: center;
+    background-color: #252525;
+    border-radius: 8px;
+    border: 1px slategrey;
+    padding: 8px;
+}
+
+.test {
+    position: absolute;
+    top: -35px;
+    left: 165px;
+    background-color: rgba(37, 37, 37, 0.6);
+    border-radius: 8px;
+    border: 1px slategrey;
+    width: 250px;
+    padding: 30px;
 }

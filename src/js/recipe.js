@@ -7,7 +7,7 @@ function initialiseRecipeDetails() {
     var id = getRecipeId();
     var recipeResponse;
     jQuery.get(SERVER_URI + 'recipe/' + id, function onSuccess(recipeDetails) {
-        recipeResponse = '<div class="recipe">' +  recipeDetails.name + '</div>';
+        recipeResponse = createRecipeDetails(recipeDetails);
         addRecipeImage();
     }).fail(function(err) {
         recipeResponse = err.responseText;
@@ -22,10 +22,27 @@ function addRecipeImage() {
     // TODO CATEGORY, ADD DIFFERENT COLOR
 }
 
-function populateRecipeDetails(response) {
+function createRecipeDetails(recipe) {
+    var ingredients = recipe.ingredients.map(function (ing) {
+        return ing.name;
+    });
+
+    var recipeElem;
+    recipeElem =
+    '<div class="recipe-detail-container">' +
+        '<div class="recipe-details">' +
+            '<div class="recipe-details__title">' +  recipe.name + '</div>' +
+            '<div class="recipe-details__cooking"><div class="tag">Cooking time</div>' + '<span class="test">' +  recipe.cooking_time.measure + '</span></div>' +
+            '<div class="recipe-details__ingredients"><div class="tag">Ingredients</div>' + '<span class="test">' + ingredients + '</span></div>' +
+        '</div>' +
+    '</div>';
+    return jQuery(recipeElem).prepend('<img class="recipe-image" src="../images/test.png"/>');
+}
+
+function populateRecipeDetails(data) {
     jQuery('#recipe-details')
         .empty()
-        .html(response);
+        .html(data);
 }
 
 function getRecipeId() {
