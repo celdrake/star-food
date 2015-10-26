@@ -1,0 +1,18 @@
+{
+  "undef": true,
+  "unused": true,
+  "curly": true,
+  "eqeqeq": true,
+  "immed": true,
+  "indent": 2,
+  "quotmark": "single",
+  "latedef": "nofunc",
+  "node": true,
+  "devel": true,
+  "dojo": true,
+  "newcap": true,
+  "globalstrict": true,
+  "globals": {
+    "jQuery": false
+  }
+}

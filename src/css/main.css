@@ -1,0 +1,89 @@
+/* Common styles and resetting */
+body, p, div {
+    margin: 0 auto;
+    border: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Helvetic Neue", Helvetica, Arial;
+    width: 60%;
+    background-color: #666666;
+}
+
+div {
+    color: #FFFFFF;
+    box-sizing: border-box;
+}
+
+h3 {
+    padding: 20px;
+    text-align: center;
+    font-size: 22px;
+    border-radius: 7px;
+    box-shadow: 5px 5px 0 rgba(37, 37, 37, 0.5);
+    background-color: #252525;
+}
+
+.main-container {
+    width: 800px;
+}
+
+.pagination {
+    height: 20px;
+    width: 100%;
+}
+
+.pagination__arrow {
+    margin: 0 10px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #330033;
+}
+
+.pagination__arrow--disabled {
+    color: #333333;
+}
+
+.pagination__arrow .text {
+    text-decoration: underline;
+}
+
+.pagination__arrow--next {
+    float: right;
+    text-align: right;
+}
+
+.pagination__arrow--prev {
+    float: left;
+}
+
+.recipes-list {
+    position: relative;
+    background-color: #996666;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.recipes-list .recipe {
+    height: 55px;
+    padding-top: 20px;
+    margin: 10px 20px;
+    border-bottom: 1px solid #dddddd;
+    font-weight: bold;
+}
+
+.recipes-list .recipe__name {
+    min-width: 300px;
+    font-size: 20px;
+    position: relative;
+}
+
+.recipes-list .recipe__link {
+    position: absolute;
+    right: 0;
+    margin-right: 40px;
+    text-decoration: none;
+    color: #330033;
+}

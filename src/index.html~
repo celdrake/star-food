@@ -1,0 +1,72 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <title>BBC's Star Food</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8" />
+
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+
+        <div class="game-status">
+            <div id="new-draw" class="action-button position-left">
+                New Draw <span class="symbol">►</span>
+            </div>
+
+
+            <div id="restart-game" class="action-button position-middle">
+                Restart Game <span class="symbol">⟳</span>
+            </div>
+
+            <div id="mode-selection" class="action-button action-button-mode position-right">
+                Mode
+                <span class="action-button__symbol action-button__symbol--computer" style="display: none;">&#128187;</span>
+                <span class="action-button__symbol action-button__symbol--human">&#9977;</span>
+            </div>
+        </div>
+
+        <div id="toggle-game-warn" class="warning" style="display: none;">
+            Please finish the current game before changing the mode
+        </div>
+
+        <div class="game-content">
+            <div class="content-area">
+                <div class="content-area__title player-1">Player 1</div>
+                <div id="game-arena-left" class="game-arena-column">
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="content-area__title">Draw results</div>
+                <div id="game-result" class="game-arena-column">
+                    <div id="player-list" class="players">
+                        <div id="player-score-1" class="player-score">
+                            Player 1 <span class="score">0 / 3</span>
+                        </div>
+                        <div id="player-score-2" class="player-score">
+                            Player 2 <span class="score">0 / 3</span>
+                        </div>
+                    </div>
+
+                    <div id="draw-result" class="draw-result">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="content-area">
+                <div class="content-area__title player-2">Player 2</div>
+                <div id="game-arena-right" class="game-arena-column">
+                </div>
+            </div>
+        </div>
+
+
+        <script src="lib/jquery-1.11.3.js"></script>
+
+        <!-- Bundle generated with webpack -->
+        <script src="bundle.js"></script>
+    </body>
+</html>
