@@ -16,10 +16,18 @@
             <div class="content-container">
                 <div id="recipes-list" class="recipes-list">
                 </div>
-                <div class="pagination">
-                    <div class="pagination__arrow pagination__arrow--prev">← <span class="text">Previous</span> </div>
-                    <div class="pagination__arrow pagination__arrow--next pagination__arrow--disabled"><span class="text">Next</span> →</div>
+                <div id="recipes-pagination" class="pagination">
+                    <div class="pagination__arrow pagination__arrow--prev" onclick="previousPage()">
+                        ← <span class="text">Previous</span>
+                    </div>
+                    <div id="pagination-page" class="pagination__current-page">
+                        Page 1
+                    </div>
+                    <div class="pagination__arrow pagination__arrow--next" onclick="nextPage()">
+                        <span class="text">Next</span> →
+                    </div>
                 </div>
+
             </div>
 
         </div>
