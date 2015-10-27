@@ -5,44 +5,52 @@ var SERVER_URI = 'http://localhost:8080/';
 
 function initialiseRecipeDetails() {
     var id = getRecipeId();
-    var recipeResponse;
     jQuery.get(SERVER_URI + 'recipe/' + id, function onSuccess(recipeDetails) {
-        recipeResponse = createRecipeDetails(recipeDetails);
-        addRecipeImage();
+        populateRecipeFields(recipeDetails);
     }).fail(function(err) {
-        recipeResponse = err.responseText;
-    }).always(function () {
-        populateRecipeDetails(recipeResponse);
+        populateRecipeError(err.responseText);
+    });
+}
+
+function populateRecipeFields(recipe) {
+    var ingredients = recipe.ingredients.map(function (ingredient) {
+        var text = ingredient.name + ': ' + ingredient.quantity;
+        if (ingredient.units) {
+            text += ' ' + ingredient.units;
+        }
+        return text;
     });
 
-}
+    // Set the recipe's title
+    var recipeContent = jQuery('#recipe-detail-content');
+    recipeContent.find('.recipe-details__title').html(recipe.name);
 
-function addRecipeImage() {
-    // TODO
-    // TODO CATEGORY, ADD DIFFERENT COLOR
-}
+    // Fill cooking time
+    var infoElements = recipeContent.find('.tag__content--cooking');
+    jQuery(infoElements[0]).html(recipe.cookingTime.measure + ' ' + recipe.cookingTime.units);
+    // Create one element per ingredient
 
-function createRecipeDetails(recipe) {
-    var ingredients = recipe.ingredients.map(function (ing) {
-        return ing.name;
+    var ingredientContainer = jQuery('#ingredient-container');
+    ingredients.forEach(function (ingredientText) {
+        ingredientContainer.append('<div class="tag__content--ingredient">' + ingredientText + '</div>');
     });
 
-    var recipeElem;
-    recipeElem =
-    '<div class="recipe-detail-container">' +
-        '<div class="recipe-details">' +
-            '<div class="recipe-details__title">' +  recipe.name + '</div>' +
-            '<div class="recipe-details__cooking"><div class="tag">Cooking time</div>' + '<span class="test">' +  recipe.cooking_time.measure + '</span></div>' +
-            '<div class="recipe-details__ingredients"><div class="tag">Ingredients</div>' + '<span class="test">' + ingredients + '</span></div>' +
-        '</div>' +
-    '</div>';
-    return jQuery(recipeElem).prepend('<img class="recipe-image" src="../images/test.png"/>');
+    // Add the image url
+    var image = '../images/' + recipe.image;
+    jQuery(recipeContent).find('.recipe__image')
+        .attr('src', image)
+        .show();
+
+    // Make the element visible, it was hidden originally
+    recipeContent.find('#recipe-details').show();
 }
 
-function populateRecipeDetails(data) {
-    jQuery('#recipe-details')
-        .empty()
-        .html(data);
+function populateRecipeError(recipeName) {
+    // Set title with an error style
+    var recipeContent = jQuery('#recipe-detail-content');
+    recipeContent.find('.recipe-details__title')
+        .addClass('recipe-details__title--error')
+        .html(recipeName);
 }
 
 function getRecipeId() {

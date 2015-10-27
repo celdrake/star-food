@@ -5,50 +5,74 @@ var SERVER_URI = 'http://localhost:8080/';
 var RECIPES_PER_PAGE = 10;
 
 var currentPage;
+var activeFilter;
 var maxPages;
 
 function initialiseRecipeList() {
     currentPage = 0;
+    activeFilter = null;
     loadBBCRecipes();
 }
 
 function loadBBCRecipes() {
     var recipesResponse = '';
-    jQuery.get(SERVER_URI + 'recipes?page=' + currentPage, function onSuccess(response) {
+    jQuery.get(buildGetRecipesUrl(), function onSuccess(response) {
         recipesResponse = generateRecipeList(response);
     }).fail(function(err) {
-        recipesResponse = err.responseText;
+        recipesResponse = jQuery('<div class="recipe recipe-error">' + err.responseText+ '</div>');
     }).always(function () {
         populateRecipeList(recipesResponse);
     });
 }
 
+function buildGetRecipesUrl() {
+    var url = SERVER_URI + 'recipes?';
+    if (activeFilter === null) {
+        // When not filtering, we can query the current page
+        url += 'page=' + currentPage;
+    } else {
+        // When filtering, we always perform the filter on the full list, not for the current page
+        url += activeFilter.name + '=' + activeFilter.value;
+        if (activeFilter.name === 'maxCookingTime') {
+            url += '&units=' + jQuery('#filter-cookingTimeUnits').find('option:selected').val(); // Selected units
+        }
+    }
+    return url;
+}
+
 function generateRecipeList(response) {
     var totalRecipes = response.totalResults;
-    if (totalRecipes === 1) {
-        // TODO should list the recipe in the current page!!!
-        window.location.href = 'recipe.html?id=' + recipes[0].id;
-        return;
-    }
     var recipeElems = [];
     response.recipes.forEach(function (recipe, idx) {
-        var attrId = 'recipe-' + recipe.id;
-        var a = '<a class="recipe__link" href="recipe.html?id=' + recipe.id + '">' + 'View Details ➤' + '</a>';
-        var name = '<span class="recipe__name">' + recipe.name + '</span>';
-        var clazz = 'recipe';
+        var ingredients = recipe.ingredients.map(function (ingredient) {
+           return ingredient.name;
+        });
+        var ingredientText = ingredients.join(', ');
+        var cookingTimeText = recipe.cookingTime.measure + ' ' + recipe.cookingTime.units;
+
+        // Basic recipe data
+        var recipeElement = jQuery('<div class="recipe"></div>');
+        recipeElement.append('<div class="recipes-list__name">' + recipe.name + '</div>');
+        recipeElement.append('<div class="recipes-list__cooking-time">' + cookingTimeText + '</div>');
+        recipeElement.append('<div class="recipes-list__ingredients">' + ingredientText + '</div>');
+
+        // Link to open the recipe in the details page
+        var openRecipeLink = jQuery('<a class="recipes-list__link" href="recipe.html?id=' + recipe.id + '">Details➤</a>');
+        recipeElement.append(openRecipeLink);
+
+        // Styling table with zebra-style (odd and even colors)
         if (idx % 2 === 0) {
-            clazz += ' recipe--odd';
+            recipeElement.addClass('recipe--odd');
         }
-        var elem = jQuery('<div class="' + clazz + '" data-id="' + attrId + '"></div>')
-            .append(name).append(a);
-        recipeElems.push(elem);
+        // Add the new row to the list
+        recipeElems.push(recipeElement);
     });
     drawPagination(totalRecipes);
     return recipeElems;
 }
 
 function nextPage() {
-    // Ensure limits
+    // Ensure limits are not surpassed
     if (currentPage < maxPages - 1) {
         currentPage++;
         loadBBCRecipes();
@@ -56,7 +80,7 @@ function nextPage() {
 }
 
 function previousPage() {
-    // Ensure limits
+    // Ensure limits are not surpassed
     if (currentPage > 0) {
         currentPage--;
         loadBBCRecipes();
@@ -65,8 +89,8 @@ function previousPage() {
 
 function drawPagination(totalRecipes) {
     maxPages = Math.ceil(totalRecipes / RECIPES_PER_PAGE);
-    var paginationArrows = jQuery('#recipes-pagination').find('.pagination__arrow');
     // Disable Next/Previous arrows when current page is in either of the limits (or both if only 1 page)
+    var paginationArrows = jQuery('#recipes-pagination').find('.pagination__arrow');
     jQuery(paginationArrows[0]).toggleClass('pagination__arrow--disabled', currentPage === 0);
     jQuery(paginationArrows[1]).toggleClass('pagination__arrow--disabled', currentPage === maxPages - 1);
 
@@ -75,11 +99,33 @@ function drawPagination(totalRecipes) {
 }
 
 function populateRecipeList(data) {
-    jQuery('#recipes-list')
-        .empty()
-        .html(data);
+    var recipesList = jQuery('#recipes-list');
+    // Remove all rows except the header, which does not have the class "recipe"
+    recipesList.find('.recipe').remove();
+    // Add the recipe rows
+    recipesList.append(data);
 }
 
+function filterRecipes() {
+    activeFilter = null;
+    jQuery('.filter-box').each(function (idx, filter) {
+        if (filter.value !== '') {
+            activeFilter = {
+                name: filter.id.substr('filter-'.length), // Remove the 'filter-' prefix
+                value: filter.value
+            };
+        }
+    });
+    loadBBCRecipes();
+}
+
+function onFilterSelected(updatedFilter) {
+    jQuery('.filter-box').each(function (idx, filter) {
+       if (filter !== updatedFilter) {
+           filter.value = '';
+       }
+    });
+}
 
 initialiseRecipeList();
 

@@ -5,7 +5,7 @@ var recipesDB = [
     {
         'id': 1,
         'name': 'Lemon Chicken',
-        'cooking_time': {
+        'cookingTime': {
             'measure': 30,
             'units': 'minutes'
         },

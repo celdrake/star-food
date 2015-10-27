@@ -14,7 +14,25 @@
         <div class="main-container">
             <h3>BBC's Star Food Recipes</h3>
             <div class="content-container">
+
+                <div class="filters">
+                    <span class="filter-title">Filters:</span>
+                    <input type="text" id="filter-name" class="filter-box" placeholder="Title" onfocus="onFilterSelected(this)"/>
+                    <input type="text" id="filter-ingredient" class="filter-box" placeholder="Ingredient" onfocus="onFilterSelected(this)"/>
+                    <input type="text" id="filter-maxCookingTime" class="filter-box filter-box--small" placeholder="Cooking Time" onfocus="onFilterSelected(this)"/>
+                    <select id="filter-cookingTimeUnits" class="filter-select">
+                        <option id="min" value="minutes">Minutes</option>
+                        <option id="hour" value="hours">Hours</option>
+                        <option id="day" value="days">Days</option>
+                    </select>
+                    <input type="button" class="filter-button" value="Filter" onclick="filterRecipes()"/>
+                </div>
                 <div id="recipes-list" class="recipes-list">
+                    <div class="recipes-header">
+                        <div class="recipes-header__name">Recipe</div>
+                        <div class="recipes-header__cooking-time">Cooking Time</div>
+                        <div class="recipes-header__ingredients">Ingredients</div>
+                    </div>
                 </div>
                 <div id="recipes-pagination" class="pagination">
                     <div class="pagination__arrow pagination__arrow--prev" onclick="previousPage()">

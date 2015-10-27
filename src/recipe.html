@@ -10,14 +10,26 @@
     </head>
     <body>
 
-
-
         <div class="main-container">
-
             <h3>Recipe details</h3>
+            <div id="recipe-detail-content" class="content-container recipe-detail-container">
+                <!-- General data: image and title -->
+                <img class="recipe__image" alt="Recipe Image"/>
+                <div class="recipe-details__title"></div>
 
-            <div id="recipe-details" class="content-container">
+                <div id="recipe-details" class="recipe-details">
+                    <!-- Cooking time block -->
+                    <div class="recipe-details__cooking">
+                        <div class="tag cooking">Cooking time</div>
+                        <span class="tag__content--cooking"></span>
+                    </div>
 
+                    <!-- Ingredients block -->
+                    <div class="recipe-details__ingredients">
+                        <div class="tag ingredients">Ingredients</div>
+                        <div id="ingredient-container" class="ingredient-container"></div>
+                    </div>
+                </div>
             </div>
         </div>
 

@@ -5,26 +5,31 @@ var recipesDB = [
     {
         'id': 1,
         'name': 'Lemon Chicken',
-        'cooking_time': {
+        'cookingTime': {
             'measure': 30,
             'units': 'minutes'
         },
         'ingredients': [
             {
-                'name': 'Chicken'
+                'name': 'Chicken',
+                'quantity': 4
             },
             {
-                'name': 'Lemon'
+                'name': 'Thyme',
+                'quantity': 1,
+                'units': 'tsp'
             },
             {
-                'name': 'Thyme'
+                'name': 'Lemon',
+                'quantity': 1
             }
-        ]
+        ],
+        'image': 'recipes/lemon_chicken.jpg'
     },
     {
         'id': 2,
         'name': 'Basic Burger',
-        'cooking_time': {
+        'cookingTime': {
             'measure': 7,
             'units': 'minutes'
         },
@@ -38,7 +43,8 @@ var recipesDB = [
             {
                 'name': 'Lettuce'
             }
-        ]
+        ],
+        'image': 'recipes/basic_burger.jpg'
     }
 ];
 var usersDB = [];
