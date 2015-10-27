@@ -8,5 +8,8 @@
     "grunt-contrib-csslint": "0.2.0",
     "grunt-contrib-jshint": "0.10.0",
     "webpack": "^1.12.2"
+  },
+  "dependencies": {
+    "express": "^4.13.3"
   }
 }
