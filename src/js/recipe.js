@@ -5,9 +5,14 @@ var SERVER_URI = 'http://localhost:8080/';
 
 function initialiseRecipeDetails() {
     var id = getRecipeId();
+    if (!id) {
+        populateRecipeError('Sorry, this recipe doesn\'t exist or may have been removed');
+        return;
+    }
     jQuery.get(SERVER_URI + 'recipe/' + id, function onSuccess(recipeDetails) {
         populateRecipeFields(recipeDetails);
     }).fail(function(err) {
+        // We display the server error directly (they are user friendly)
         populateRecipeError(err.responseText);
     });
 }
@@ -32,8 +37,8 @@ function populateRecipeFields(recipe) {
     // Fill cooking time
     var infoElements = recipeContent.find('.tag__content--cooking');
     jQuery(infoElements[0]).html(recipe.cookingTime.measure + ' ' + recipe.cookingTime.units);
-    // Create one element per ingredient
 
+    // Create one element per ingredient
     var ingredientContainer = jQuery('#ingredient-container');
     ingredients.forEach(function (ingredientText) {
         if (ingredientText !== '') {
@@ -42,12 +47,11 @@ function populateRecipeFields(recipe) {
     });
 
     // Add the image url
-    var image = '../images/' + recipe.image;
     jQuery(recipeContent).find('.recipe__image')
-        .attr('src', image)
+        .attr('src', '../images/' + recipe.image)
         .show();
 
-    // Make the element visible, it was hidden originally
+    // Make the element visible, once all is ready to be displayed
     recipeContent.find('#recipe-details').show();
 }
 
@@ -60,6 +64,7 @@ function populateRecipeError(recipeName) {
 }
 
 function getRecipeId() {
+    // Extracts the ID of the current image from the URL
     var pageUrl = decodeURIComponent(window.location.search.substring(1));
     var urlVariables = pageUrl.split('&');
     for (var i = 0; i < urlVariables.length; i++) {
@@ -68,6 +73,7 @@ function getRecipeId() {
             return parameterName[1] === undefined ? true : parameterName[1];
         }
     }
+    return undefined;
 }
 
 initialiseRecipeDetails();

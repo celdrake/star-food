@@ -5,31 +5,30 @@ var db = require('./mockDatabase');
 var RECIPES_PER_PAGE = 10;
 
 function findAllRecipes(req, res) {
-    console.log('in');
     // If there are parameters in the query, it will either be page OR filters
     var queryParams = req.query;
     if (queryParams && !queryParams.page) {
         return filterRecipes(req, res);
     }
+    // Normal query for all the recipes. The "page" parameter can be specified in the URL
     db.findAllRecipes(function (err, recipes) {
         if (err === null && recipes.length > 0) {
             var recipesNumber = recipes.length;
+            var recipeResult;
             if (recipesNumber < 10) {
-                // Return a single page with all the recipes
-                res.send({
-                    totalResults: recipes.length,
-                    recipes: recipes
-                });
+                // Results fit a single page, so no need to paginate
+                recipeResult = recipes;
             } else {
-                // Paginate response
+                // Results fit a single page, so we will paginate the response
                 var page = parseInt(req.query.page || 0, 10);
                 var pageStart = page * RECIPES_PER_PAGE;
                 var pageEnd = pageStart + RECIPES_PER_PAGE;
-                res.send({
-                    totalResults: recipes.length,
-                    recipes: recipes.slice(pageStart, pageEnd)
-                });
+                recipeResult = recipes.slice(pageStart, pageEnd);
             }
+            res.send({
+                totalResults: recipeResult.length,
+                recipes: recipeResult
+            });
         } else {
             // Error while retrieving the recipes, or none exists
             res.status(404).send('Sorry, we currently have no recipes for you');
@@ -41,11 +40,13 @@ function filterRecipes(req, res) {
     db.findAllRecipes(function (err, recipes) {
         var filteredRecipes = [];
         if (err === null) {
+            // Add recipes that are valid for all the request filters
             recipes.forEach(function (recipe) {
                 if (isValidForFilter(recipe, req.query)) {
                     filteredRecipes.push(recipe);
                 }
             });
+            // Check if there is at least one valid recipe for the given filters
             if (filteredRecipes.length > 0) {
                 res.send({
                     totalResults: filteredRecipes.length,
@@ -64,10 +65,9 @@ function filterRecipes(req, res) {
 }
 
 function isValidForFilter(recipe, queryParams) {
-    // Allows for multiple filters simultaneously
+    // "Parallel if-statements" would allow for multiple filters simultaneously
     var isValid = true;
     if (queryParams.name) {
-        console.log('name', queryParams.name);
         isValid = isValid && hasFilterValue(recipe.name, queryParams.name);
     }
     if (queryParams.ingredient) {
@@ -81,15 +81,15 @@ function isValidForFilter(recipe, queryParams) {
         isValid = isValid && hasFilteredIngredient;
     }
     if (queryParams.maxCookingTime) {
-        // Check in minutes the limit of the filter for the cooking time
-        var timeInMinutes = getTimeMinutes(recipe.cookingTime.measure, recipe.cookingTime.units);
-        var maxMinutes = getTimeMinutes(parseInt(queryParams.maxCookingTime, 10), queryParams.units);
+        // Transform the values into minutes before comparing them
+        var timeInMinutes = getTimeInMinutes(recipe.cookingTime.measure, recipe.cookingTime.units);
+        var maxMinutes = getTimeInMinutes(parseInt(queryParams.maxCookingTime, 10), queryParams.units);
         isValid = isValid && timeInMinutes <= maxMinutes;
     }
     return isValid;
 }
 
-function getTimeMinutes(measure, units) {
+function getTimeInMinutes(measure, units) {
     var multiplierToMinutes;
     switch (units) {
         case 'hours':
@@ -98,9 +98,9 @@ function getTimeMinutes(measure, units) {
         case 'days':
             multiplierToMinutes = 24 * 60;
             break;
-        // If the units are not specified, minutes are assumed
         case 'minutes':
         default:
+            // Values which don't have units are considered to be entered as minutes
             multiplierToMinutes = 1;
             break;
     }

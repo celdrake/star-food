@@ -1,21 +1,22 @@
 'use strict';
 
-// This module simulates that we have an existing database.
-// I have done this to simplify the development and to make it easy to evaluate
+// This module simulates an existing database.
+// This has been done this to simplify the development and to make it easy to evaluate
 // the different cases.
 
-// Here we have the declarations for the different database statuses given in the features
+// Declarations for different database statuses from the requirement features
 var emptyRecipeDB = require('./database_empty').database;
 var oneRecipeDB = require('./database_one_recipe').database;
 var sampleRecipesDB = require('./database_three_recipes').database;
 
 
-/** Changing this line will change the current database status to the one in the selected module **/
+/** Changing the uncommented line will set the current database status to the one in the selected module **/
 //var currentDB = emptyRecipeDB;
 //var currentDB = oneRecipeDB;
 var currentDB = sampleRecipesDB;
 
 
+// Mock functions that perform a query on the database
 function mockQueryRecipes(callback) {
     return callback(null, currentDB['recipes']);
 }
@@ -28,6 +29,7 @@ function mockQueryStarredRecipes(callback) {
     return callback(null, currentDB['starredRecipes']);
 }
 
+// Mock function that performs a find by primary key on the Recipe table
 function findRecipeById(id, callback) {
     var recipes = currentDB['recipes'];
     var recipe = null;

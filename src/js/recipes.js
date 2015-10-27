@@ -15,13 +15,13 @@ function initialiseRecipeList() {
 }
 
 function loadBBCRecipes() {
-    var recipesResponse = '';
+    var recipesContent = '';
     jQuery.get(buildGetRecipesUrl(), function onSuccess(response) {
-        recipesResponse = generateRecipeList(response);
+        recipesContent = generateRecipeList(response);
     }).fail(function(err) {
-        recipesResponse = jQuery('<div class="recipe recipe-error">' + err.responseText+ '</div>');
+        recipesContent = jQuery('<div class="recipe recipe-error">' + err.responseText+ '</div>');
     }).always(function () {
-        populateRecipeList(recipesResponse);
+        populateRecipeList(recipesContent);
     });
 }
 
@@ -60,8 +60,8 @@ function generateRecipeList(response) {
         var openRecipeLink = jQuery('<a class="recipes-list__link" href="recipe.html?id=' + recipe.id + '">Details➤</a>');
         recipeElement.append(openRecipeLink);
 
-        // Styling table with zebra-style (odd and even colors)
-        if (idx % 2 === 0) {
+        // Applying zebra-like styles (odd and even colors)
+        if (idx % 2 === 1) {
             recipeElement.addClass('recipe--odd');
         }
         // Add the new row to the list
@@ -109,6 +109,7 @@ function populateRecipeList(data) {
 function filterRecipes() {
     activeFilter = null;
     jQuery('.filter-box').each(function (idx, filter) {
+        // Only one filter can have a value at any given moment, find if there is an active one
         if (filter.value !== '') {
             activeFilter = {
                 name: filter.id.substr('filter-'.length), // Remove the 'filter-' prefix
@@ -120,6 +121,7 @@ function filterRecipes() {
 }
 
 function onFilterSelected(updatedFilter) {
+    // When a filter input box is focused, the rest is cleared (only one filter can be performed on the query)
     jQuery('.filter-box').each(function (idx, filter) {
        if (filter !== updatedFilter) {
            filter.value = '';

@@ -9,6 +9,7 @@ function findRecipe(req, res) {
     } else {
         db.findRecipeById(id, function (err, recipe) {
             if (err === null && recipe !== null) {
+                // The recipe was found, send it as JSON
                 res.send(recipe);
             } else {
                 // Error while retrieving the recipe, or it does not exist
