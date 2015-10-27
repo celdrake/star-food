@@ -86,6 +86,12 @@ function isValidForFilter(recipe, queryParams) {
         var maxMinutes = getTimeInMinutes(parseInt(queryParams.maxCookingTime, 10), queryParams.units);
         isValid = isValid && timeInMinutes <= maxMinutes;
     }
+    // "false" is a valid value
+    if (queryParams.starred !== undefined) {
+        // Mock user authentication
+        var currentUserId = 1;
+        isValid = isValid && isRecipeStarredBy(recipe, currentUserId, queryParams.starred);
+    }
     return isValid;
 }
 
@@ -105,6 +111,15 @@ function getTimeInMinutes(measure, units) {
             break;
     }
     return measure * multiplierToMinutes;
+}
+
+function isRecipeStarredBy(recipe, userId, starred) {
+    if (!recipe.starredBy) {
+        return starred === 'false';
+    }
+    // Validate for the case of filtering for starred or unstarred recipes (xor but without using the operator)
+    var userHasStarred = recipe.starredBy.indexOf(userId) !== -1;
+    return (userHasStarred && starred === 'true') || (!userHasStarred && starred === 'false');
 }
 
 function hasFilterValue(recipeField, filterValue) {

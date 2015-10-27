@@ -6,6 +6,7 @@ var RECIPES_PER_PAGE = 10;
 
 var currentPage;
 var activeFilter;
+var starredFilter;
 var maxPages;
 
 // Mock authentication was already performed
@@ -17,6 +18,7 @@ var currentUser = {
 function initialiseRecipeList() {
     currentPage = 0;
     activeFilter = null;
+    starredFilter = true;
     loadBBCRecipes();
 }
 
@@ -154,6 +156,16 @@ function populateRecipeList(data) {
     recipesList.find('.recipe').remove();
     // Add the recipe rows
     recipesList.append(data);
+}
+
+function filterStarredRecipes() {
+    activeFilter = {
+        name: 'starred',
+        value: starredFilter
+    };
+    loadBBCRecipes();
+    // Allow to perform the opposite search after the data has been retrieved
+    starredFilter = !starredFilter;
 }
 
 function filterRecipes() {

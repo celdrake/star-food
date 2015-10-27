@@ -191,9 +191,19 @@ input[type="text"]:focus {
     box-shadow: 0 1px 0 2px #4195fc;
 }
 
-.filter-box--small {
+.filter-box__starred {
+    margin: 5px;
+    padding-top: 3px;
+    width: 3%;
+    font-size: 22px;
+    border-radius: 4px;
+    background-color: goldenrod;
+    cursor: pointer;
+}
+
+.filter-box.filter-box--small {
     margin-right: -4px;
-    width: 110px;
+    width: 100px;
 }
 
 .option {
@@ -201,7 +211,7 @@ input[type="text"]:focus {
 }
 
 input[type="button"] {
-    width: 100px;
+    width: 85px;
     height: 30px;
     border: 2px solid #D2D291;
     border-radius: 8px;
