@@ -10,8 +10,9 @@ app.set('json spaces', 2);
 
 // Enable CORS requests so that the client application can call the server running on a different port
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Methods', 'PUT, GET, DELETE');
     next();
 });
 
@@ -23,9 +24,12 @@ app.use(function(req, res, next) {
 // "Recipes" Endpoints
 app.get('/recipes', recipes.findAllRecipes);
 
-
 // "Recipe" Endpoints
 app.get('/recipe/:id', recipe.findRecipe);
+
+// "Starred recipes" Endpoints
+app.put('/recipes/:id/star', recipe.star);
+app.put('/recipes/:id/unstar', recipe.unstar);
 
 
 // Server initialisation

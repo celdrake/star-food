@@ -8,6 +8,12 @@ var currentPage;
 var activeFilter;
 var maxPages;
 
+// Mock authentication was already performed
+var currentUser = {
+    id: 1,
+    name: 'Joe'
+};
+
 function initialiseRecipeList() {
     currentPage = 0;
     activeFilter = null;
@@ -44,6 +50,7 @@ function generateRecipeList(response) {
     var totalRecipes = response.totalResults;
     var recipeElems = [];
     response.recipes.forEach(function (recipe, idx) {
+        var id = recipe.id;
         var ingredients = recipe.ingredients.map(function (ingredient) {
            return ingredient.name;
         });
@@ -51,13 +58,17 @@ function generateRecipeList(response) {
         var cookingTimeText = recipe.cookingTime.measure + ' ' + recipe.cookingTime.units;
 
         // Basic recipe data
-        var recipeElement = jQuery('<div class="recipe"></div>');
+        var recipeElement = jQuery('<div class="recipe" id="recipe-' + id + '"></div>');
         recipeElement.append('<div class="recipes-list__name">' + recipe.name + '</div>');
         recipeElement.append('<div class="recipes-list__cooking-time">' + cookingTimeText + '</div>');
         recipeElement.append('<div class="recipes-list__ingredients">' + ingredientText + '</div>');
 
+        // Whether the recipe is or not starred by the user
+        var isStarred = isStarredByCurrentUser(recipe);
+        recipeElement.append(createStarredElementHTML(id, isStarred));
+
         // Link to open the recipe in the details page
-        var openRecipeLink = jQuery('<a class="recipes-list__link" href="recipe.html?id=' + recipe.id + '">Details➤</a>');
+        var openRecipeLink = jQuery('<a class="recipes-list__link" href="recipe.html?id=' + id + '">Details➤</a>');
         recipeElement.append(openRecipeLink);
 
         // Applying zebra-like styles (odd and even colors)
@@ -69,6 +80,22 @@ function generateRecipeList(response) {
     });
     drawPagination(totalRecipes);
     return recipeElems;
+}
+
+function createStarredElementHTML(id, isStarred) {
+    if (isStarred) {
+        return '<div class="recipes-list__starred" onclick="setStarredRecipe(' + id + ', false)">★</div>';
+    } else {
+        return '<div class="recipes-list__unstarred" onclick="setStarredRecipe(' + id + ', true)">☆</div>';
+    }
+}
+
+function isStarredByCurrentUser(recipe) {
+    var starredBy = recipe.starredBy;
+    if (!starredBy) {
+        return false;
+    }
+    return starredBy.indexOf(currentUser.id) !== -1;
 }
 
 function nextPage() {
@@ -85,6 +112,29 @@ function previousPage() {
         currentPage--;
         loadBBCRecipes();
     }
+}
+
+function setStarredRecipe(id, doStar) {
+    jQuery.ajax({
+        url: SERVER_URI + 'recipes/' + id + (doStar ? '/star' : '/unstar') + '?userId=' + currentUser.id,
+        contentType: 'text/plain',
+        type: 'PUT',
+        success: function () {
+            return updateStarredRecipeStatus(id, doStar);
+        }
+    });
+}
+
+function updateStarredRecipeStatus(id, doStar) {
+    var recipeContainer = jQuery('#recipe-' + id);
+    // Remove the previous element with the old status
+    if (doStar) {
+        jQuery(recipeContainer).find('.recipes-list__unstarred').remove();
+    } else {
+        jQuery(recipeContainer).find('.recipes-list__starred').remove();
+    }
+    // Add the new element with the old status
+    recipeContainer.append(createStarredElementHTML(id, doStar));
 }
 
 function drawPagination(totalRecipes) {
