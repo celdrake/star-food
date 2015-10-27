@@ -14,8 +14,12 @@ function initialiseRecipeDetails() {
 
 function populateRecipeFields(recipe) {
     var ingredients = recipe.ingredients.map(function (ingredient) {
-        var text = ingredient.name + ': ' + ingredient.quantity;
-        if (ingredient.units) {
+        // We will still display ingredients with no quantity neither units
+        var text = ingredient.name;
+        if (!!ingredient.quantity) {
+            text += ': ' + ingredient.quantity;
+        }
+        if (!!ingredient.units) {
             text += ' ' + ingredient.units;
         }
         return text;
@@ -32,7 +36,9 @@ function populateRecipeFields(recipe) {
 
     var ingredientContainer = jQuery('#ingredient-container');
     ingredients.forEach(function (ingredientText) {
-        ingredientContainer.append('<div class="tag__content--ingredient">' + ingredientText + '</div>');
+        if (ingredientText !== '') {
+            ingredientContainer.append('<div class="tag__content--ingredient">' + ingredientText + '</div>');
+        }
     });
 
     // Add the image url

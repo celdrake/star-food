@@ -13,6 +13,7 @@
   "newcap": true,
   "globalstrict": true,
   "globals": {
-    "jQuery": false
+    "jQuery": false,
+    "window": false
   }
 }

@@ -1,6 +1,5 @@
 'use strict';
 
-
 var recipesDB = [
     {
         'id': 1,
@@ -28,23 +27,43 @@ var recipesDB = [
     },
     {
         'id': 2,
-        'name': 'Basic Burger',
+        'name': 'Beef Stroganoff',
         'cookingTime': {
-            'measure': 7,
+            'measure': 30,
             'units': 'minutes'
         },
         'ingredients': [
             {
-                'name': 'Burger'
+                'name': 'Beef'
             },
             {
-                'name': 'Bun'
+                'name': 'Mustard'
             },
             {
-                'name': 'Lettuce'
+                'name': 'Mushrooms'
             }
         ],
-        'image': 'recipes/basic_burger.jpg'
+        'image': 'recipes/beef_stroganoff.jpg'
+    },
+    {
+        'id': 3,
+        'name': 'Chicken Caesar Salad',
+        'cookingTime': {
+            'measure': 25,
+            'units': 'minutes'
+        },
+        'ingredients': [
+            {
+                'name': 'Lettuce'
+            },
+            {
+                'name': 'Chicken'
+            },
+            {
+                'name': 'Parmesan'
+            }
+        ],
+        'image': 'recipes/caesar_salad.jpg'
     }
 ];
 var usersDB = [];

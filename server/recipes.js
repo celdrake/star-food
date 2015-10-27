@@ -5,6 +5,7 @@ var db = require('./mockDatabase');
 var RECIPES_PER_PAGE = 10;
 
 function findAllRecipes(req, res) {
+    console.log('in');
     // If there are parameters in the query, it will either be page OR filters
     var queryParams = req.query;
     if (queryParams && !queryParams.page) {

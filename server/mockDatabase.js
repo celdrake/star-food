@@ -7,13 +7,13 @@
 // Here we have the declarations for the different database statuses given in the features
 var emptyRecipeDB = require('./database_empty').database;
 var oneRecipeDB = require('./database_one_recipe').database;
-var twoRecipesDB = require('./database_two_recipes').database;
+var sampleRecipesDB = require('./database_three_recipes').database;
 
 
 /** Changing this line will change the current database status to the one in the selected module **/
 //var currentDB = emptyRecipeDB;
 //var currentDB = oneRecipeDB;
-var currentDB = twoRecipesDB;
+var currentDB = sampleRecipesDB;
 
 
 function mockQueryRecipes(callback) {
