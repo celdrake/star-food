@@ -26,7 +26,7 @@ function findAllRecipes(req, res) {
                 recipeResult = recipes.slice(pageStart, pageEnd);
             }
             res.send({
-                totalResults: recipeResult.length,
+                totalResults: recipes.length, // return the unfiltered number of recipes
                 recipes: recipeResult
             });
         } else {

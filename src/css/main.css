@@ -54,6 +54,7 @@ h3 {
 }
 
 .pagination__arrow .text {
+    color: #252525;
     text-decoration: underline;
 }
 
@@ -81,9 +82,9 @@ h3 {
 
 .recipes-list .recipe,
 .recipes-list .recipes-header {
-    height: 50px;
+    height: 55px;
     border-bottom: 1px solid #dddddd;
-    padding: 6px 0 0 20px;
+    padding: 5px 0 2px 20px;
 }
 
 .recipes-list .recipe.recipe--odd {
@@ -118,7 +119,7 @@ h3 {
 .recipes-list__starred,
 .recipes-list__unstarred {
     margin: 5px 15px;
-    width: 3%;
+    width: 4%;
     cursor: pointer;
     font-size: 22px;
     border-radius: 4px;
@@ -193,8 +194,8 @@ input[type="text"]:focus {
 
 .filter-box__starred {
     margin: 5px;
-    padding-top: 3px;
-    width: 3%;
+    padding: 0 6px;
+    width: 4%;
     font-size: 22px;
     border-radius: 4px;
     background-color: goldenrod;
@@ -329,6 +330,6 @@ input[type="button"] {
     border-radius: 8px;
     border: 1px slategrey;
     width: 250px;
-    padding: 5px 0 5px 20px;
+    padding: 2px 0 2px 20px;
     margin: 10px 0 0 0;;
 }

@@ -8,12 +8,14 @@
 var emptyRecipeDB = require('./database_empty').database;
 var oneRecipeDB = require('./database_one_recipe').database;
 var sampleRecipesDB = require('./database_three_recipes').database;
+var paginatedDB = require('./database_twentythree_recipes').database;
 
 
 /** Changing the uncommented line will set the current database status to the one in the selected module **/
 //var currentDB = emptyRecipeDB;
 //var currentDB = oneRecipeDB;
 var currentDB = sampleRecipesDB;
+//var currentDB = paginatedDB;
 
 
 // Mock functions that perform a query on the database
